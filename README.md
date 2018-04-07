@@ -9,11 +9,11 @@ See [Project Integration](#project-integration)
 - configure NDK environment:
 `export ANDROID_NDK=/path/to/your/ndk/`, e.g. `export ANDROID_NDK=/opt/android-ndk-r16b`
 - arm:
-`mkdir build_arm`;
+`mkdir build_arm; cd build_arm`;
 `cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI="armeabi-v7a" -DANDROID_PLATFORM=android-14 ..`;
 `make`
 - arm64:
-`mkdir build_arm64`;
+`mkdir build_arm64; cd build_arm64`;
 `cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI="arm64-v8a" -DANDROID_PLATFORM=android-14 ..`;
 `make`
 2. Run
