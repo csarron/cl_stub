@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.4)
 project(CLStub)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -17,7 +17,7 @@ install(FILES "include/CL/cl.hpp" DESTINATION include)
 add_executable(test_stub test_stub.cc cl_stub.c)
 
 if (UNIX AND NOT APPLE) # Linux system
-    set_property(TARGET TestStub PROPERTY LINK_FLAGS "-Wl,--no-as-needed -ldl")
+    set_property(TARGET test_stub PROPERTY LINK_FLAGS "-Wl,--no-as-needed -ldl")
 endif ()
 
 target_include_directories(test_stub PRIVATE include)
