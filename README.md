@@ -10,14 +10,14 @@ See [Project Integration](#project-integration)
 `export ANDROID_NDK=/path/to/your/ndk/`, e.g. `export ANDROID_NDK=/opt/android-ndk-r16b`
 - arm:
 `mkdir build_arm; cd build_arm`;
-`cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI="armeabi-v7a" -DANDROID_PLATFORM=android-14 ..`;
+`cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI="armeabi-v7a" -DANDROID_PLATFORM=android-17 ..`;
 `make`
 - arm64:
 `mkdir build_arm64; cd build_arm64`;
-`cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI="arm64-v8a" -DANDROID_PLATFORM=android-14 ..`;
+`cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI="arm64-v8a" -DANDROID_PLATFORM=android-17 ..`;
 `make`
 2. Run
-push the library and executable to the phone by adb: `adb push TestStub /data/local/tmp && adb push libcl_stub.so /data/local/tmp` and then run `adb shell "export LD_LIBRARY_PATH=/data/local/tmp && /data/local/tmp/TestStub"`, below are two sample outputs:
+push the library and executable to the phone by adb: `adb push test_stub /data/local/tmp` and then run `adb shell /data/local/tmp/test_stub`, below are two sample outputs:
 
 ```
 open OpenCL library at /system/lib/egl/libGLES_mali.so
@@ -35,7 +35,7 @@ result: {19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 }
 
 ### macOS
 
-Just build `mkdir build && cd build && cmake .. && make` and run `./TestStub`
+Just build `mkdir build && cd build && cmake .. && make` and run `./test_stub`
 sample output:
 
 ```
@@ -52,7 +52,7 @@ result: {19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 }
 **Note**: you may need to install OpenCL driver on Linux, try: `sudo apt update &&
 sudo apt install ocl-icd-opencl-dev`
 
-Just build `mkdir build && cd build && cmake .. && make` and run `./TestStub`
+Just build `mkdir build && cd build && cmake .. && make` and run `./test_stub`
 sample output:
 
 ```
@@ -70,6 +70,6 @@ result: {19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 }
 
 
 ## Credit
-Examples in TestStub.cc are borrowed from [OpenCL-examples](https://github.com/Dakkers/OpenCL-examples/blob/master/example00/main.cpp)
+Examples in test_stub.cc are borrowed from [OpenCL-examples](https://github.com/Dakkers/OpenCL-examples/blob/master/example00/main.cpp)
 
 

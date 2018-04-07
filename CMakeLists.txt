@@ -14,15 +14,13 @@ install(TARGETS "cl_stub" LIBRARY DESTINATION lib PERMISSIONS OWNER_READ OWNER_W
 install(FILES "include/cl_stub.h" DESTINATION include)
 install(FILES "include/CL/cl.hpp" DESTINATION include)
 
-add_executable(TestStub TestStub.cc)
+add_executable(test_stub test_stub.cc cl_stub.c)
 
-if (ANDROID)
-    set_property(TARGET TestStub PROPERTY COMPILE_FLAGS "-fpie")
-    set_property(TARGET TestStub PROPERTY LINK_FLAGS "-pie")
-elseif (UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE) # Linux system
     set_property(TARGET TestStub PROPERTY LINK_FLAGS "-Wl,--no-as-needed -ldl")
 endif ()
 
-target_include_directories(TestStub PRIVATE include)
-target_link_libraries(TestStub cl_stub)
-
+target_include_directories(test_stub PRIVATE include)
+if (ANDROID)
+    target_link_libraries(test_stub log)
+endif ()
