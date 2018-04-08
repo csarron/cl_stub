@@ -8,6 +8,7 @@ build:
   ci:
     - sudo apt-get -qq -y update
     - sudo apt-get install cmake
+    - pwd
     - rm -fr `pwd`/android-ndk-r16b
     - ndk_file=android-ndk-r16b-darwin-x86_64.zip
     - curl -L "http://dl.google.com/android/repository/${ndk_file}" -O
@@ -15,6 +16,7 @@ build:
     - rm ${ndk_file}
     - export ANDROID_NDK=`pwd`/android-ndk-r16b
 
+    - pwd
     - mkdir build_arm
     - cd build_arm;
     - cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI="armeabi-v7a" -DANDROID_PLATFORM=android-17 ..
