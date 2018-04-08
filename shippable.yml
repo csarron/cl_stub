@@ -6,11 +6,7 @@ branches:
 
 build:
   ci:
-    - sudo apt install wget build-essential
-    - wget https://cmake.org/files/v3.11/cmake-3.11.0-Linux-x86_64.tar.gz
-    - tar xzf cmake-3.11.0-Linux-x86_64.tar.gz
-    - export PATH=`pwd`/cmake-3.11.0-Linux-x86_64/bin:$PATH
-
+    - sudo apt install cmake
     - pwd
     - mkdir build
     - cd build
