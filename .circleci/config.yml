@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: install cmake
-          command: apt-get update && apt-get install cmake
+          command: apt-get update && apt-get install -y cmake
 
       - run:
           name: run build
