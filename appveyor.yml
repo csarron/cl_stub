@@ -1,0 +1,32 @@
+os:
+  - Visual Studio 2015
+
+build:
+  verbosity: detailed
+
+configuration:
+  - Debug
+
+
+install:
+  - mkdir C:\cl_stub
+  - cd C:\cl_stub
+  ############################################################################
+  # Install a recent CMake
+  ############################################################################
+  - set CMAKE_URL="https://cmake.org/files/v3.11/cmake-3.11.0-win64-x64.zip"
+  - appveyor DownloadFile %CMAKE_URL% -FileName cmake.zip
+  - 7z x cmake.zip -oC:\cl_stub
+  - move C:\cl_stub\cmake-* C:\cl_stub\cmake # Move to a version-agnostic directory
+  - set PATH=C:\cl_stub\cmake\bin;%PATH%
+  - cmake --version
+
+before_build:
+  - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
+  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
+
+build_script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - cmake --build .
