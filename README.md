@@ -2,7 +2,7 @@
 
 | Android | Linux | macOS |
 | --- | --- | --- |
-| [![Run Status](https://api.shippable.com/projects/5ac96f0b03be900700447aa0/badge?branch=master)](https://app.shippable.com/github/csarron/cl_stub) | [![CircleCI](https://circleci.com/gh/csarron/cl_stub/tree/master.svg?style=shield)](https://circleci.com/gh/csarron/cl_stub/tree/master)  | [![Build Status](https://travis-ci.org/csarron/cl_stub.svg?branch=master)](https://travis-ci.org/csarron/cl_stub) |
+| [![CircleCI](https://circleci.com/gh/csarron/cl_stub/tree/master.svg?style=shield)](https://circleci.com/gh/csarron/cl_stub/tree/master) | [![Run Status](https://api.shippable.com/projects/5ac96f0b03be900700447aa0/badge?branch=master)](https://app.shippable.com/github/csarron/cl_stub) | [![Build Status](https://travis-ci.org/csarron/cl_stub.svg?branch=master)](https://travis-ci.org/csarron/cl_stub) |
 
 For easy use of OpenCL drivers by building a shared stub library, which is especially useful for Android due to lack of Google's official support. For phones not having OpenCL drivers, you may find [the other project](https://github.com/csarron/PhoneVendorBlobs) useful.
 
