@@ -12,7 +12,7 @@ endif ()
 
 install(TARGETS "cl_stub" LIBRARY DESTINATION lib PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 install(FILES "include/cl_stub.h" DESTINATION include)
-install(FILES "include/CL/cl.hpp" DESTINATION include)
+install(DIRECTORY "include/CL" DESTINATION include)
 
 add_executable(test_stub test_stub.cc cl_stub.c)
 
