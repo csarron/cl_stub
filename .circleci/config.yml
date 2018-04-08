@@ -7,8 +7,8 @@ jobs:
       - checkout
       - run:
           name: install cmake
-          command: sudo apt install cmake
+          command: sudo apt-get install cmake
 
       - run:
-          name: install cmake
+          name: run build
           command:  mkdir build && cd build && cmake .. && make
