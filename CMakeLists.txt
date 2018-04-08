@@ -7,6 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_library(cl_stub SHARED cl_stub.c)
 target_include_directories(cl_stub PRIVATE include)
 if (ANDROID)
+    set_target_properties(cl_stub
+            PROPERTIES
+            LIBRARY_OUTPUT_DIRECTORY
+            "${CMAKE_CURRENT_BINARY_DIR}/${ANDROID_ABI}")
     target_link_libraries(cl_stub log)
 endif ()
 
