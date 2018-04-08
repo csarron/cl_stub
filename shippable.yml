@@ -6,27 +6,15 @@ branches:
 
 build:
   ci:
-    - sudo apt install wget
+    - sudo apt install wget build-essential
     - wget https://cmake.org/files/v3.11/cmake-3.11.0-Linux-x86_64.tar.gz
     - tar xzf cmake-3.11.0-Linux-x86_64.tar.gz
     - export PATH=`pwd`/cmake-3.11.0-Linux-x86_64/bin:$PATH
-    - ndk_file=android-ndk-r16b-linux-x86_64.zip
-    - wget "http://dl.google.com/android/repository/${ndk_file}"
-    - unzip -oq ${ndk_file}
-    - rm ${ndk_file}
-    - export ANDROID_NDK=`pwd`/android-ndk-r16b
 
     - pwd
-    - mkdir build_arm
-    - cd build_arm;
-    - cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI="armeabi-v7a" -DANDROID_PLATFORM=android-17 ..
-    - make
-
-    - cd ..
-
-    - mkdir build_arm64
-    - cd build_arm64
-    - cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI="arm64-v8a" -DANDROID_PLATFORM=android-17 ..
+    - mkdir build
+    - cd build
+    - cmake ..
     - make
 
 integrations:
