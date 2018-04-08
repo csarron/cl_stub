@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: debian:stretch
+    steps:
+      - checkout
+      - run:
+          name: install cmake
+          command: sudo apt install cmake
+
+      - run:
+          name: install cmake
+          command:  mkdir build && cd build && cmake .. && make
