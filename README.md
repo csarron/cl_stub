@@ -70,7 +70,7 @@ result: {19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 }
 
 ## Project Integration
 - [x] library use, just copy libcl_stub.so and correspoding header files (`include/`)
-- [ ] cmake integration: todo testing.
+- [x] cmake integration: see example project [here](https://github.com/csarron/OpenCLDemo/blob/master/app/src/main/cpp/CMakeLists.txt).
 
 
 ## Credit
