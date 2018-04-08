@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: |
+        command: |
           sudo apt install wget
           wget https://cmake.org/files/v3.11/cmake-3.11.0-Linux-x86_64.tar.gz
           tar xzf cmake-3.11.0-Linux-x86_64.tar.gz
