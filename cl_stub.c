@@ -68,7 +68,8 @@ static int open_libopencl_so() {
                 exit(-1);
                 #else
                       // still have a chance to correctly find the opencl path
-                       sprintf(path, "/data/data/%s/lib/libOpenCL.so", application_id);
+                    sprintf(path, "/data/data/%s/lib/libOpenCL.so", application_id);
+                    LOGI("\n trying to load opencl from %s\n", path);
                 #endif
 
             }else{
