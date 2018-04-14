@@ -61,12 +61,12 @@ static int open_libopencl_so() {
             fclose(path_cmd);
             if (strlen(code_path) > 511) {
                 LOGW("\n app pkg name:%s too long, usually means they are split apks\n", code_path);
-                //only get the first line
-                for (int j = 0; j < 512; ++j) {
-                    if (code_path[j] == '\n') {
-                        code_path[j] = '\0';
-                        break;
-                    }
+            }
+            //only get the first line
+            for (int j = 0; j < 512; ++j) {
+                if (code_path[j] == '\n') {
+                    code_path[j] = '\0';
+                    break;
                 }
             }
             // process output to get real code path
@@ -75,10 +75,12 @@ static int open_libopencl_so() {
             size_t prefix_len = strlen(prefix);
             size_t suffix_len = strlen(suffix);
             char real_code_path[strlen(code_path)];
-            memcpy(real_code_path, &code_path[prefix_len], strlen(code_path) - prefix_len - suffix_len - 1);
-            real_code_path[strlen(code_path) - prefix_len - suffix_len - 1] = '\0';
+//            LOGI("\n code_path %ld %s\n", strlen(code_path), code_path);
 
-            LOGI("\n real_code_path %ld %s\n", strlen(real_code_path), real_code_path);
+            memcpy(real_code_path, &code_path[prefix_len], strlen(code_path) - prefix_len - suffix_len);
+            real_code_path[strlen(code_path) - prefix_len - suffix_len] = '\0';
+
+//            LOGI("\n real_code_path %ld %s\n", strlen(real_code_path), real_code_path);
             path = (char *) malloc((strlen(real_code_path) + 25) * sizeof(char *));
         #if defined(__aarch64__)
             sprintf(path, "%s/lib/arm64/libOpenCL.so", real_code_path);
