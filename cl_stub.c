@@ -9,61 +9,7 @@
  *   If none of these are set, default system paths will be considered
 **/
 
-#include "cl_stub.h"
-
-
-#if defined(__APPLE__) || defined(__MACOSX)
-static const char *default_so_paths[] = {
-        "libOpenCL.so",
-        "/System/Library/Frameworks/OpenCL.framework/OpenCL"
-};
-#elif defined(__ANDROID__) || defined(ANDROID)
-#include <android/log.h>
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "libopencl", __VA_ARGS__))
-
-#if defined(__aarch64__)
-static const char *default_so_paths[] = {
-        "/system/lib64/libOpenCL.so",
-        "/system/lib64/egl/libGLES_mali.so",
-        "/system/lib64/libPVROCL.so",
-        "/system/vendor/lib64/libOpenCL.so",
-        "/system/vendor/lib64/egl/libGLES_mali.so",
-        "/system/vendor/lib64/libPVROCL.so",
-        "libOpenCL.so"
-};
-#else
-static const char *default_so_paths[] = {
-        "/system/lib/libOpenCL.so",
-        "/system/lib/egl/libGLES_mali.so",
-        "/system/lib/libPVROCL.so",
-        "/system/vendor/lib/libOpenCL.so",
-        "/system/vendor/lib/egl/libGLES_mali.so",
-        "/system/vendor/lib/libPVROCL.so",
-        "libOpenCL.so"
-};
-#endif
-#elif defined(_WIN32)
-static const char *default_so_paths[] = {
-"OpenCL.dll"
-};
-#elif defined(__linux__)
-static const char *default_so_paths[] = {
-"/usr/lib/x86_64-linux-gnu/libOpenCL.so",
-"/usr/lib/libOpenCL.so",
-"/usr/local/lib/libOpenCL.so",
-"/usr/local/lib/libpocl.so",
-"/usr/lib64/libOpenCL.so",
-"/usr/lib32/libOpenCL.so",
-"libOpenCL.so"
-};
-#endif
-
-#ifndef LOGI
-
-#include <stdio.h>
-
-#define LOGI(...) ((int)printf(__VA_ARGS__))
-#endif
+#include <cl_stub.h>
 
 static void *so_handle = NULL;
 
@@ -94,11 +40,65 @@ static int open_libopencl_so() {
                 break;
             }
         }
+#if defined(__ANDROID__) || defined(ANDROID)
+        pid_t pid = getpid();
+        char app_pkg_cmd[64] = { 0 };
+        sprintf(app_pkg_cmd, "/proc/%d/cmdline", pid);
+        FILE *pkg_cmd = fopen(app_pkg_cmd, "r");
+        char application_id[64] = { 0 };
+        if (pkg_cmd) {
+            fread(application_id, sizeof(application_id), 1, pkg_cmd);
+//            LOGI("\n app pkg name %ld %s\n", strlen(application_id), application_id);
+            fclose(pkg_cmd);
+        }
+        char code_path_cmd[128] = { 0 };
+        sprintf(code_path_cmd, "pm path %s", application_id);
+        FILE *path_cmd = popen(code_path_cmd, "r");
+        if (path_cmd) {
+            char code_path[512] = { 0 };
+            fread(code_path, sizeof(code_path), 1, path_cmd);
+//            LOGI("\n code path %ld %s\n", strlen(code_path), code_path);
+            fclose(path_cmd);
+            if (strlen(code_path) > 511) {
+                #if defined(__aarch64__)
+                LOGE("\n app pkg name:%s too long, usually means they are split apks,"
+                             " (e.g. instant run from AndroidStudio), which is not supported!"
+                             "Please build single apk from command line instead! \n", code_path);
+                LOGW("\n If you want to keep using AndroidStudio for quick debugging, try to remove arm64-v8a from abi, i.e. only enable armeabi-v7a\n");
+                exit(-1);
+                #else
+                      // still have a chance to correctly find the opencl path
+                       sprintf(path, "/data/data/%s/lib/libOpenCL.so", application_id);
+                #endif
+
+            }else{
+                // process output to get real code path
+                const char *prefix = "package:";
+                const char *suffix = "/base.apk";
+                size_t prefix_len = strlen(prefix);
+                size_t suffix_len = strlen(suffix);
+                char real_code_path[strlen(code_path)];
+                memcpy(real_code_path, &code_path[prefix_len], strlen(code_path) - prefix_len - suffix_len);
+                real_code_path[strlen(code_path) - prefix_len - suffix_len] = '\0';
+
+//            LOGI("\n real_code_path %ld %s\n", strlen(real_code_path), real_code_path);
+                path = (char *) malloc((strlen(real_code_path) + 25) * sizeof(char *));
+            #if defined(__aarch64__)
+                sprintf(path, "%s/lib/arm64/libOpenCL.so", real_code_path);
+            #else
+                sprintf(path, "%s/lib/arm/libOpenCL.so", real_code_path);
+            #endif
+            }
+        }
+#endif
     }
 
     if (path) {
-        LOGI("\nopen OpenCL library at %s\n", path);
-        printf("\nopen OpenCL library at %s\n", path);
+        #if defined(__ANDROID__) || defined(ANDROID)
+            LOGI("\nopen OpenCL library at %s\n", path);
+        #else
+            printf("\nopen OpenCL library at %s\n", path);
+        #endif
         so_handle = dlopen(path, RTLD_LAZY);
         return 0;
     } else {

@@ -1,12 +1,63 @@
 #ifndef LIBOPENCL_STUB_H
 #define LIBOPENCL_STUB_H
 
-
+#include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <dlfcn.h>
 #include <CL/cl.h>
 #include <CL/cl_gl.h>
+
+#if defined(__APPLE__) || defined(__MACOSX)
+static const char *default_so_paths[] = {
+        "libOpenCL.so",
+        "/System/Library/Frameworks/OpenCL.framework/OpenCL"
+};
+#elif defined(__ANDROID__) || defined(ANDROID)
+#include <android/log.h>
+#include <unistd.h>
+#include <string.h>
+
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "cl_stub", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "cl_stub", __VA_ARGS__))
+#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, "cl_stub", __VA_ARGS__))
+
+#if defined(__aarch64__)
+static const char *default_so_paths[] = {
+        "/system/lib64/libOpenCL.so",
+        "/system/lib64/egl/libGLES_mali.so",
+        "/system/lib64/libPVROCL.so",
+        "/system/vendor/lib64/libOpenCL.so",
+        "/system/vendor/lib64/egl/libGLES_mali.so",
+        "/system/vendor/lib64/libPVROCL.so",
+        "libOpenCL.so"
+};
+#else
+static const char *default_so_paths[] = {
+        "/system/lib/libOpenCL.so",
+        "/system/lib/egl/libGLES_mali.so",
+        "/system/lib/libPVROCL.so",
+        "/system/vendor/lib/libOpenCL.so",
+        "/system/vendor/lib/egl/libGLES_mali.so",
+        "/system/vendor/lib/libPVROCL.so",
+        "libOpenCL.so"
+};
+#endif
+#elif defined(_WIN32)
+static const char *default_so_paths[] = {
+"OpenCL.dll"
+};
+#elif defined(__linux__)
+static const char *default_so_paths[] = {
+"/usr/lib/x86_64-linux-gnu/libOpenCL.so",
+"/usr/lib/libOpenCL.so",
+"/usr/local/lib/libOpenCL.so",
+"/usr/local/lib/libpocl.so",
+"/usr/lib64/libOpenCL.so",
+"/usr/lib32/libOpenCL.so",
+"libOpenCL.so"
+};
+#endif
 
 typedef void (*f_pfn_notify)(const char *, const void *, size_t, void *);
 
